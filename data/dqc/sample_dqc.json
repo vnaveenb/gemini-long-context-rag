@@ -1,0 +1,112 @@
+{
+  "version": "1.0",
+  "name": "Learning Content Data Quality Checklist",
+  "description": "Standard DQC for evaluating learning course materials across structure, content quality, accessibility, and compliance dimensions.",
+  "items": [
+    {
+      "item_id": "DQC-001",
+      "category": "Structure",
+      "requirement": "Course must have clearly stated learning objectives",
+      "criteria": "The document must contain a dedicated section or statement listing specific, measurable learning objectives or learning outcomes for the course.",
+      "weight": 1.0
+    },
+    {
+      "item_id": "DQC-002",
+      "category": "Structure",
+      "requirement": "Content must be organized into logical modules or sections",
+      "criteria": "The document must have a clear hierarchical structure with distinct modules, sections, or chapters that follow a logical progression.",
+      "weight": 1.0
+    },
+    {
+      "item_id": "DQC-003",
+      "category": "Structure",
+      "requirement": "Each module must have an introduction and summary",
+      "criteria": "Each major module or section should have an introductory paragraph explaining what will be covered and a summary or key takeaways section.",
+      "weight": 0.8
+    },
+    {
+      "item_id": "DQC-004",
+      "category": "Content Quality",
+      "requirement": "Content must be free of factual inaccuracies",
+      "criteria": "The information presented must be accurate, up-to-date, and consistent throughout the document. Look for contradictory statements, outdated references, or unsupported claims.",
+      "weight": 1.0
+    },
+    {
+      "item_id": "DQC-005",
+      "category": "Content Quality",
+      "requirement": "Content must use consistent terminology",
+      "criteria": "Technical terms, acronyms, and domain-specific vocabulary must be used consistently throughout the document. Key terms should be defined on first use.",
+      "weight": 0.8
+    },
+    {
+      "item_id": "DQC-006",
+      "category": "Content Quality",
+      "requirement": "Content must include practical examples or case studies",
+      "criteria": "The document must include real-world examples, case studies, scenarios, or practical exercises that illustrate the concepts being taught.",
+      "weight": 0.8
+    },
+    {
+      "item_id": "DQC-007",
+      "category": "Assessment",
+      "requirement": "Assessment criteria must be clearly defined",
+      "criteria": "The document must include clear assessment methods, evaluation criteria, or knowledge check questions aligned to the stated learning objectives.",
+      "weight": 1.0
+    },
+    {
+      "item_id": "DQC-008",
+      "category": "Assessment",
+      "requirement": "Assessments must align with learning objectives",
+      "criteria": "Every stated learning objective must have a corresponding assessment question, activity, or evaluation method that tests whether the objective has been met.",
+      "weight": 1.0
+    },
+    {
+      "item_id": "DQC-009",
+      "category": "Accessibility",
+      "requirement": "Content must use clear and accessible language",
+      "criteria": "The text should be written at an appropriate reading level for the target audience. Avoid unnecessary jargon, and explain complex concepts in simple terms where possible.",
+      "weight": 0.8
+    },
+    {
+      "item_id": "DQC-010",
+      "category": "Accessibility",
+      "requirement": "Visual content must have text descriptions",
+      "criteria": "All images, diagrams, charts, and tables must have associated text descriptions, captions, or alt-text equivalents that convey the same information.",
+      "weight": 0.7
+    },
+    {
+      "item_id": "DQC-011",
+      "category": "Compliance",
+      "requirement": "Content must include proper citations and references",
+      "criteria": "All external sources, data, statistics, and quoted material must be properly cited with a references section or bibliography.",
+      "weight": 0.8
+    },
+    {
+      "item_id": "DQC-012",
+      "category": "Compliance",
+      "requirement": "Content must comply with organizational branding guidelines",
+      "criteria": "The document must follow organizational branding standards including proper use of logos, color schemes, fonts, and document templates where applicable.",
+      "weight": 0.6
+    },
+    {
+      "item_id": "DQC-013",
+      "category": "Engagement",
+      "requirement": "Content must include interactive or engagement elements",
+      "criteria": "The document should include elements that promote learner engagement such as discussion questions, reflection prompts, activities, quizzes, or multimedia references.",
+      "weight": 0.7
+    },
+    {
+      "item_id": "DQC-014",
+      "category": "Completeness",
+      "requirement": "Course must include prerequisite information",
+      "criteria": "The document must clearly state any prerequisites, prior knowledge requirements, or recommended preparation needed before starting the course.",
+      "weight": 0.7
+    },
+    {
+      "item_id": "DQC-015",
+      "category": "Completeness",
+      "requirement": "Course must include target audience description",
+      "criteria": "The document must clearly identify the intended target audience, their roles, experience levels, or any other relevant demographic information.",
+      "weight": 0.7
+    }
+  ]
+}

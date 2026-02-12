@@ -1,44 +1,44 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Virtual Environment
+# Virtual environments
 .venv/
 venv/
-ENV/
+env/
 
-# Environment Variables
+# Environment variables
 .env
-.env.*
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# Operating System
+# Data directories (keep structure, ignore contents)
+data/vectordb/*
+data/uploads/*
+data/reports/*
+!data/**/.gitkeep
+
+# Audit database
+data/audit.db
+
+# OS files
 .DS_Store
 Thumbs.db
 
-# Project specific
-data/
-data/vectordb/
-data/uploads/
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
