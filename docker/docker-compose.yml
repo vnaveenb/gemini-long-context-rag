@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   api:
     build:
@@ -19,13 +17,14 @@ services:
 
   frontend:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    command: streamlit run src/frontend/app.py --server.port=8501 --server.address=0.0.0.0
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
     ports:
-      - "8501:8501"
-    env_file:
-      - ../.env
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     depends_on:
       api:
         condition: service_healthy

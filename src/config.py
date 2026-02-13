@@ -45,6 +45,13 @@ class Settings(BaseSettings):
     chroma_persist_dir: str = str(_BASE_DIR / "data" / "vectordb")
     chroma_collection_name: str = "lra_documents"
 
+    # ── Evaluation Mode ──────────────────────────────────────────
+    # auto = long-context if doc fits, else RAG
+    # long_context = always use long-context (fail if too large)
+    # rag = always use chunked RAG pipeline
+    evaluation_mode: Literal["auto", "long_context", "rag"] = "auto"
+    long_context_max_tokens: int = 800_000  # threshold for auto mode
+
     # ── Retrieval ────────────────────────────────────────────────
     retrieval_top_k: int = 10
     retrieval_score_threshold: float = 0.5

@@ -73,6 +73,61 @@ def get_llm(settings: Settings | None = None) -> BaseChatModel:
             raise ValueError(f"Unsupported LLM provider: {provider}")
 
 
+def get_structured_llm(settings: Settings | None = None) -> BaseChatModel:
+    """Return a ChatModel configured for guaranteed JSON output.
+
+    Uses provider-native structured output (e.g. Gemini response_mime_type)
+    so the model can never return markdown-wrapped or malformed JSON.
+    Falls back to the regular LLM for providers without native JSON mode.
+    """
+    settings = settings or get_settings()
+    provider = settings.llm_provider
+
+    logger.info(
+        "Initialising structured-output LLM",
+        provider=provider,
+        model=settings.llm_model,
+    )
+
+    # Batch evaluation (15 DQC items) needs ~6000-8000 output tokens.
+    # Default LLM_MAX_TOKENS (4096) truncates the response mid-JSON.
+    batch_max_tokens = max(settings.llm_max_tokens, 65536)
+
+    match provider:
+        case "google_genai":
+            from langchain_google_genai import ChatGoogleGenerativeAI
+
+            return ChatGoogleGenerativeAI(
+                model=settings.llm_model,
+                google_api_key=settings.google_api_key,
+                temperature=settings.llm_temperature,
+                max_output_tokens=batch_max_tokens,
+                convert_system_message_to_human=False,
+                model_kwargs={
+                    "response_mime_type": "application/json",
+                },
+            )
+
+        case "openai":
+            from langchain_openai import ChatOpenAI
+
+            return ChatOpenAI(
+                model=settings.llm_model,
+                api_key=settings.openai_api_key,
+                temperature=settings.llm_temperature,
+                max_tokens=batch_max_tokens,
+                model_kwargs={"response_format": {"type": "json_object"}},
+            )
+
+        case _:
+            # Providers without native JSON mode — fall back to regular LLM
+            logger.warning(
+                "No native JSON mode for provider, using regular LLM",
+                provider=provider,
+            )
+            return get_llm(settings)
+
+
 # ── Embedding Factory ────────────────────────────────────────────────────────
 
 

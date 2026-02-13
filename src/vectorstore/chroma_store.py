@@ -37,10 +37,12 @@ class VectorStore:
 
     # ── Write ────────────────────────────────────────────────────
 
-    def add_chunks(self, chunks: list[Chunk]) -> list[str]:
-        """Embed and store a list of Chunk objects. Returns their IDs."""
+    def add_chunks(self, chunks: list[Chunk], batch_size: int = 100) -> list[str]:
+        """Embed and store a list of Chunk objects in batches."""
         if not chunks:
             return []
+
+        import time
 
         documents = [
             LCDocument(
@@ -52,7 +54,24 @@ class VectorStore:
         ids = [chunk.chunk_id for chunk in chunks]
 
         logger.info("Adding chunks to vector store", count=len(chunks))
-        self._store.add_documents(documents, ids=ids)
+
+        for i in range(0, len(documents), batch_size):
+            batch_docs = documents[i : i + batch_size]
+            batch_ids = ids[i : i + batch_size]
+
+            try:
+                self._store.add_documents(batch_docs, ids=batch_ids)
+                logger.debug(f"Added batch {i//batch_size + 1}/{(len(documents) + batch_size - 1)//batch_size}")
+            except Exception as e:
+                logger.error(f"Error adding batch starting at index {i}: {e}")
+                # Wait and retry once on failure
+                time.sleep(5)
+                try:
+                    self._store.add_documents(batch_docs, ids=batch_ids)
+                except Exception as retry_e:
+                    logger.error(f"Retry failed for batch starting at index {i}: {retry_e}")
+                    raise retry_e
+
         logger.info("Chunks stored", count=len(ids))
         return ids
 

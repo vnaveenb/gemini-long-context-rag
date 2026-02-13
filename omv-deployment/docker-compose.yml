@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   # ── API Service ─────────────────────────────────────────────────────────────
   lra-api:
@@ -7,8 +5,8 @@ services:
     container_name: lra-api
     restart: unless-stopped
     command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     environment:
       - ENVIRONMENT=production
       # ── Critical Auth & Keys ──
@@ -35,15 +33,13 @@ services:
 
   # ── Frontend Service ────────────────────────────────────────────────────────
   lra-frontend:
-    image: ghcr.io/vnaveenb/gemini-long-context-rag:latest
+    image: ghcr.io/vnaveenb/gemini-long-context-rag-frontend:latest
     container_name: lra-frontend
     restart: unless-stopped
-    command: ["streamlit", "run", "src/frontend/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
     ports:
-      - "3530:8501" # Host port 3530 -> Container port 8501
+      - "3530:3000"
     environment:
-      - API_BASE=http://lra-api:8000
-      - ENVIRONMENT=production
+      - NEXT_PUBLIC_API_URL=http://lra-api:8000
     depends_on:
       - lra-api
     labels:
