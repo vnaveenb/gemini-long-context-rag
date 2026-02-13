@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+  # ── API Service ─────────────────────────────────────────────────────────────
+  lra-api:
+    image: ghcr.io/vnaveenb/gemini-long-context-rag:latest
+    container_name: lra-api
+    restart: unless-stopped
+    command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    expose:
+      - "8000"
+    environment:
+      - ENVIRONMENT=production
+      # ── Critical Auth & Keys ──
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - API_KEY=${API_KEY}
+      # ── LLM Config ──
+      - LLM_PROVIDER=google_genai
+      - LLM_MODEL=gemini-2.5-flash
+      # ── Paths ──
+      - CHROMA_PERSIST_DIR=/app/data/vectordb
+      - UPLOAD_DIR=/app/data/uploads
+      - REPORT_DIR=/app/data/reports
+      - DQC_DIR=/app/data/dqc
+      - AUDIT_DB_PATH=/app/data/audit.db
+    volumes:
+      - lra_data:/app/data
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1024M
+
+  # ── Frontend Service ────────────────────────────────────────────────────────
+  lra-frontend:
+    image: ghcr.io/vnaveenb/gemini-long-context-rag:latest
+    container_name: lra-frontend
+    restart: unless-stopped
+    command: ["streamlit", "run", "src/frontend/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    ports:
+      - "3530:8501" # Host port 3530 -> Container port 8501
+    environment:
+      - API_BASE=http://lra-api:8000
+      - ENVIRONMENT=production
+    depends_on:
+      - lra-api
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+
+  # ── Cloudflared Tunnel ──────────────────────────────────────────────────────
+  cloudflared-lra:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-lra
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    depends_on:
+      - lra-frontend
+      - lra-api
+
+volumes:
+  lra_data:

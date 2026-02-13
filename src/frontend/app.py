@@ -1,6 +1,7 @@
 """Streamlit frontend for the Learning Content Compliance Intelligence System."""
 
 import json
+import os
 import time
 from pathlib import Path
 
@@ -9,7 +10,7 @@ import streamlit as st
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
-API_BASE = "http://localhost:8000"
+API_BASE = os.getenv("API_BASE", "http://localhost:8000")
 
 st.set_page_config(
     page_title="LRA — Compliance Intelligence",
